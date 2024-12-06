@@ -27,6 +27,7 @@ export async function initPersistence(filePath: string, fallbackData: DatabaseMo
   // eslint-disable-next-line no-unused-labels -- dev code path
   DEV: shouldCrashDev(!isPath(filePath), 'initPersistence should be called with a path');
   const newDb = await JSONFilePreset<DatabaseModel>(filePath, fallbackData);
+  console.log(filePath)
 
   // Read the database to initialize it
   newDb.data = fallbackData;

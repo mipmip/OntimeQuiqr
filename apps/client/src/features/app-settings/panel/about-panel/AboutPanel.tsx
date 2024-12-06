@@ -18,7 +18,7 @@ export default function AboutPanel() {
       <Panel.Section>
         <Panel.SubHeader>Links</Panel.SubHeader>
         <ExternalLink href={documentationUrl}>Read the docs</ExternalLink>
-        <ExternalLink href={githubUrl}>Follow the project on GitHub</ExternalLink>
+        <ExternalLink href={githubUrl}>Follow the project on GitHub.</ExternalLink>
         <ExternalLink href={discordUrl}>Discord server</ExternalLink>
       </Panel.Section>
       <Panel.Section>
