@@ -2,7 +2,7 @@ import React from 'react';
 import {
   createRoutesFromChildren,
   matchRoutes,
- // Navigate,
+  // Navigate,
   Route,
   Routes,
   useLocation,
@@ -54,14 +54,17 @@ const MessageControl = React.lazy(() => import('./features/control/message/Messa
 
 /***** QUIQR ***/
 import {
-  //SiteLibrarySidebar,
+  SiteLibrarySidebar,
   SiteLibraryRouted, SiteLibraryToolbarRight } from './qrClient/containers/SiteLibrary'
 import { createTheme, ThemeProvider }                                     from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { blue }                                                           from '@material-ui/core/colors';
 import TopToolbarLeft                                                     from './qrClient/containers/TopToolbarLeft'
 import service                                                            from './qrClient/services/service';
-
+import {
+  PrefsSidebar,
+  // PrefsRouted
+}                                      from './qrClient/containers/Prefs';
 import QStyle from './qrClient/app-ui-styles/quiqr10/style-light'
 
 
@@ -139,7 +142,7 @@ export default class QrAppRouter extends React.Component<MyProps, MyState>{
     return (<Routes>
 
       <Route path='/' element={
-         <TopToolbarLeft title="Site Library"/>
+        <TopToolbarLeft title="Site Library"/>
       } />
 
       <Route path='/sites/*' element={
@@ -156,13 +159,13 @@ export default class QrAppRouter extends React.Component<MyProps, MyState>{
     return (<Routes>
 
       <Route path="/"  element={
-         <SiteLibraryToolbarRight
+        <SiteLibraryToolbarRight
           handleChange={(v: string)=>this.handleLibraryViewChange(v)}
           activeLibraryView={ libraryView} />
       } />
 
       <Route path='/sites/*' element={
-         <SiteLibraryToolbarRight
+        <SiteLibraryToolbarRight
           handleChange={(v: string)=>this.handleLibraryViewChange(v)}
           activeLibraryView={ libraryView} />
       } />
@@ -170,49 +173,51 @@ export default class QrAppRouter extends React.Component<MyProps, MyState>{
     </Routes>);
   }
 
-  /*
   renderMenuSwitch(){
     return (<Routes>
 
 
-      <Route path="/" exact={true} render={ ({match, history})=> {
-        return (
-          <SiteLibrarySidebar />
-        );
-      }} />
-      <Route path="/sites" exact={true} render={ ({match, history})=> {
-        return (
-          <SiteLibrarySidebar />
-        );
-      }} />
-      <Route path="/sites/*" exact={true} render={ ({match, history})=> {
-        return (
-          <SiteLibrarySidebar />
-        );
-      }} />
+      <Route path="/" element={
+        <SiteLibrarySidebar />
 
-      <Route path="/create-new" exact={true} render={ ({match, history})=> {
-        return null;
-      }} />
+      } />
 
-      <Route path="/welcome" exact={true} render={ ({match, history})=> {
-        return null;
-      }} />
+      <Route path="/sites" element={
+        <SiteLibrarySidebar />
+      } />
 
-      <Route path="/prefs" exact={false} render={ ({match, history})=> {
-        return (<PrefsSidebar
+
+      <Route path="/sites/*" element={
+        <SiteLibrarySidebar />
+      } />
+
+      <Route path="/create-new" element={
+        null
+      } />
+
+      <Route path="/welcome" element={
+        null
+      } />
+
+      <Route path="/prefs" element={
+        <PrefsSidebar
           menus={[]}
           hideItems={!this.state.forceShowMenu && !this.state.menuIsLocked}
           menuIsLocked={this.state.menuIsLocked}
           onToggleItemVisibility={()=>{this.toggleForceShowMenu()}}
           onLockMenuClicked={()=>{this.toggleMenuIsLocked()}}
-        />);
-      }} />
+        />
+      } />
 
 
     </Routes>);
   }
-  */
+
+  toggleMenuIsLocked(){
+    let menuIsLocked = !this.state.menuIsLocked;
+    this.setState({menuIsLocked, forceShowMenu: true, skipMenuTransition:true});
+    window.dispatchEvent(new Event('resize'));
+  }
 
   toggleForceShowMenu(){
     const forceShowMenu = !this.state.forceShowMenu;
@@ -221,12 +226,12 @@ export default class QrAppRouter extends React.Component<MyProps, MyState>{
 
   renderContentSwitch(){
     return (<Routes>
-      <Route path='/' element={
+      <Route path='/*' element={
         this.renderSelectSites(null)
       } />
 
       <Route path='/sites/new-site/:refresh' element={
-         this.renderSelectSites('newSiteDialog')
+        this.renderSelectSites('newSiteDialog')
       } />
 
       <Route path='/sites/import-site/:refresh' element={
@@ -234,16 +239,16 @@ export default class QrAppRouter extends React.Component<MyProps, MyState>{
       } />
 
       <Route path='/sites/import-site-url/:url' element={
-          <SiteLibraryRouted
-            activeLibraryView={ this.state.libraryView}
-            key={ 'selectSite' }
-            //importSiteURL={ decodeURIComponent(match.params.url) }
-            importSite={ true }
-          />
+        <SiteLibraryRouted
+          activeLibraryView={ this.state.libraryView}
+          key={ 'selectSite' }
+          //importSiteURL={ decodeURIComponent(match.params.url) }
+          importSite={ true }
+        />
       } />
 
       <Route path='/sites/*' element={
-         this.renderSelectSites(null)
+        this.renderSelectSites(null)
       } />
 
     </Routes>);
@@ -261,8 +266,6 @@ export default class QrAppRouter extends React.Component<MyProps, MyState>{
     );
   }
 
-
-
   render(){
 
     let openDialog = null;
@@ -271,372 +274,55 @@ export default class QrAppRouter extends React.Component<MyProps, MyState>{
     let contentContainerStyle = this.state.style.contentContainer;
 
     let containerStyle = this.state.style.container;
-  return (
-    <React.Suspense fallback={null}>
-      <SentryRoutes>
+    return (
+      <React.Suspense fallback={null}>
+        <Routes>
 
+          <Route
+            path="*"
+            element={
+              <ThemeProvider theme={this.state.theme}>
+                <CssBaseline />
 
-        <Route
-          path='/'
-          element={
-            <SiteLibraryRouted
-              activeLibraryView={ /*this.state.libraryView*/ null}
-              key={ 'selectSite' }
-              newSite={ (openDialog === 'newSiteDialog' ? true : false ) }
-              importSite={ (openDialog === 'importSiteDialog' ? true : false ) }
-            />
-          }
-        />
-        <Route
-          path='/sites'
-          element={
-            <SiteLibraryRouted
-              activeLibraryView={ /*this.state.libraryView*/ null}
-              key={ 'selectSite' }
-              newSite={ (openDialog === 'newSiteDialog' ? true : false ) }
-              importSite={ (openDialog === 'importSiteDialog' ? true : false ) }
-            />
-          }
-        />
-        <Route
-          path='/sites/*'
-          element={
-            <SiteLibraryRouted
-              activeLibraryView={ /*this.state.libraryView*/ null}
-              key={ 'selectSite' }
-              newSite={ (openDialog === 'newSiteDialog' ? true : false ) }
-              importSite={ (openDialog === 'importSiteDialog' ? true : false ) }
-            />
-          }
-        />
+                <React.Fragment>
 
+                  <div className="App" >
 
+                    <div className="xxtopToolbar">
 
+                      <div className="toolbarLeft">
+                        { /*this.renderTopToolbarLeftSwitch()*/ }
+                      </div>
 
-
-
-        <Route
-          path='/public'
-          element={
-            <ViewLoader>
-              <SPublic />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/minimal'
-          element={
-            <ViewLoader>
-              <SMinimalTimer />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/clock'
-          element={
-            <ViewLoader>
-              <SClock />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/countdown'
-          element={
-            <ViewLoader>
-              <SCountdown />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/backstage'
-          element={
-            <ViewLoader>
-              <SBackstage />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/studio'
-          element={
-            <ViewLoader>
-              <SStudio />
-            </ViewLoader>
-          }
-        />
-        {/*/!* Lower third cannot have a loading screen *!/*/}
-        <Route path='/lower' element={<SLowerThird />} />
-        <Route
-          path='/timeline'
-          element={
-            <ViewLoader>
-              <STimeline />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/info'
-          element={
-            <ViewLoader>
-              <SProjectInfo />
-            </ViewLoader>
-          }
-        />
-
-        {/*/!* Protected Routes *!/*/}
-        <Route path='/editor2' element={<Editor />} />
-        <Route path='/cuesheet' element={<Cuesheet />} />
-        <Route path='/op' element={<Operator />} />
-
-        {/*/!* Protected Routes - Elements *!/*/}
-        <Route
-          path='/rundown'
-          element={
-            <EditorFeatureWrapper>
-              <RundownPanel />
-            </EditorFeatureWrapper>
-          }
-        />
-        <Route
-          path='/timercontrol'
-          element={
-            <EditorFeatureWrapper>
-              <TimerControl />
-            </EditorFeatureWrapper>
-          }
-        />
-        <Route
-          path='/messagecontrol'
-          element={
-            <EditorFeatureWrapper>
-              <MessageControl />
-            </EditorFeatureWrapper>
-          }
-        />
-        <Route
-          path='/log'
-          element={
-            <EditorFeatureWrapper>
-              <Log />
-            </EditorFeatureWrapper>
-          }
-        />
-
-     <Route
-        path="*"
-        element={
-            <ThemeProvider theme={this.state.theme}>
-              <CssBaseline />
-
-              <React.Fragment>
-
-                <div className="App" >
-
-                  <div className="xxtopToolbar">
-
-                    <div className="toolbarLeft">
-                      { this.renderTopToolbarLeftSwitch() }
+                      <div className="toolbarRight">
+                        { /*this.renderTopToolbarRightSwitch()*/ }
+                      </div>
                     </div>
 
-                    <div className="toolbarRight">
-                      { this.renderTopToolbarRightSwitch() }
+                    <div style={containerStyle}>
+
+                      <div style={menuContainerStyle} className='hideScrollbar' >
+                        { /*this.renderMenuSwitch()*/ }
+                      </div>
+
+                      <div key="main-content" style={contentContainerStyle} onClick={()=>{ if(this.state.forceShowMenu) this.toggleForceShowMenu() }}>
+                        { this.renderSelectSites(null) }
+                      </div>
+
+
                     </div>
-                  </div>
-
-                  <div style={containerStyle}>
-
-                    <div style={menuContainerStyle} className='hideScrollbar' >
-                      { null /*this.renderMenuSwitch()*/ }
-                    </div>
-
-                    <div key="main-content" style={contentContainerStyle} onClick={()=>{ if(this.state.forceShowMenu) this.toggleForceShowMenu() }}>
-                      { this.renderContentSwitch() }
-                    </div>
-
 
                   </div>
+                </React.Fragment>
+              </ThemeProvider>
 
-                </div>
-              </React.Fragment>
-            </ThemeProvider>
+            } />
 
-        } />
-
-
-        {/*<Route path='*' element={<STimer />} />*/}
-      </SentryRoutes>
-    </React.Suspense>
-  );
+        </Routes>
+      </React.Suspense>
+    );
 
   }
 }
 
-/*
 
-export function AppRouter() {
-  // handle client path changes
-  useClientPath();
-
-  let openDialog = null;
-  return (
-    <React.Suspense fallback={null}>
-      <SentryRoutes>
-
-
-
-
-
-
-
-        <Route
-          path='/public'
-          element={
-            <ViewLoader>
-              <SPublic />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/minimal'
-          element={
-            <ViewLoader>
-              <SMinimalTimer />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/clock'
-          element={
-            <ViewLoader>
-              <SClock />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/countdown'
-          element={
-            <ViewLoader>
-              <SCountdown />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/backstage'
-          element={
-            <ViewLoader>
-              <SBackstage />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/studio'
-          element={
-            <ViewLoader>
-              <SStudio />
-            </ViewLoader>
-          }
-        />
-        <Route path='/lower' element={<SLowerThird />} />
-        <Route
-          path='/timeline'
-          element={
-            <ViewLoader>
-              <STimeline />
-            </ViewLoader>
-          }
-        />
-        <Route
-          path='/info'
-          element={
-            <ViewLoader>
-              <SProjectInfo />
-            </ViewLoader>
-          }
-        />
-
-        <Route path='/editor2' element={<Editor />} />
-        <Route path='/cuesheet' element={<Cuesheet />} />
-        <Route path='/op' element={<Operator />} />
-
-        <Route
-          path='/rundown'
-          element={
-            <EditorFeatureWrapper>
-              <RundownPanel />
-            </EditorFeatureWrapper>
-          }
-        />
-        <Route
-          path='/timercontrol'
-          element={
-            <EditorFeatureWrapper>
-              <TimerControl />
-            </EditorFeatureWrapper>
-          }
-        />
-        <Route
-          path='/messagecontrol'
-          element={
-            <EditorFeatureWrapper>
-              <MessageControl />
-            </EditorFeatureWrapper>
-          }
-        />
-        <Route
-          path='/log'
-          element={
-            <EditorFeatureWrapper>
-              <Log />
-            </EditorFeatureWrapper>
-          }
-        />
-
-
-     <Route
-        path="*"
-        render={ ({match, history})=>{
-          this.history = history;
-          return (
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-
-              <React.Fragment>
-
-                <div className="App" >
-
-                  <div className="xxtopToolbar">
-
-                    <div className="toolbarLeft">
-                      { this.renderTopToolbarLeftSwitch() }
-                    </div>
-
-                    <div className="toolbarRight">
-                      { this.renderTopToolbarRightSwitch() }
-                    </div>
-                  </div>
-
-                  <div style={containerStyle}>
-
-                    <div style={menuContainerStyle} className='hideScrollbar' >
-                      { this.renderMenuSwitch() }
-                    </div>
-
-                    <div key="main-content" style={contentContainerStyle} onClick={()=>{ if(this.state.forceShowMenu) this.toggleForceShowMenu() }}>
-                      { this.renderContentSwitch() }
-                    </div>
-
-
-                  </div>
-
-                </div>
-              </React.Fragment>
-            </ThemeProvider>
-          );
-
-        }} />
-
-        <Route path='*' element={<STimer />} />
-      </SentryRoutes>
-    </React.Suspense>
-  );
-}
-*/

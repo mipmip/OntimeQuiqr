@@ -25,7 +25,7 @@ const useStyles = theme => ({
 
 class PrefsAdvanced extends React.Component {
 
-  history: any;
+  history;
 
   constructor(props){
     super(props);

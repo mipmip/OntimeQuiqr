@@ -534,7 +534,7 @@ class SiteLibraryRouted extends React.Component{
 
       <Routes>
 
-          <Route path='/sites/import-site-url/:url' exact render={ ({match, history})=> {
+          <Route path='/sites/import-site-url/:url' element={ ({match, history})=> {
             this.history = history;
             let url = decodeURIComponent(match.params.refresh)
             return (
@@ -569,12 +569,9 @@ class SiteLibraryRouted extends React.Component{
           }}
           />
 
-          <Route path='/' render={ ({match, history})=> {
-            this.history = history;
-            return (
+          <Route path='/' element={ 
               this.renderSelectSites("last",null)
-            );
-          }}
+          }
           />
           <Route path='/sites' render={ ({match, history})=> {
             this.history = history;

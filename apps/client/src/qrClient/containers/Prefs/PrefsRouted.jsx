@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import  PrefsGeneral  from './PrefsGeneral';
 import  PrefsAdvanced  from './PrefsAdvanced';
 
@@ -7,7 +7,7 @@ export class PrefsRouted extends React.Component {
 
   render(){
     return (
-      <Switch>
+      <Routes>
         <Route
           path={'/prefs/general'}
           render={({history,match})=>{
@@ -31,7 +31,7 @@ export class PrefsRouted extends React.Component {
         />
 
 
-      </Switch>
+      </Routes>
     )
   }
 }

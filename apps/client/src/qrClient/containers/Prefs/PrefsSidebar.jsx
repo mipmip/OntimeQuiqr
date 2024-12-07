@@ -8,7 +8,7 @@ export class PrefsSidebar extends React.Component {
     return <Route render={({history})=>{ return this.renderWithRoute(history) }} />
   }
 
-  renderWithRoute(history: {push:(path: string)=>void}){
+  renderWithRoute(history){
 
     let menu = {
       title: 'Preferences',
