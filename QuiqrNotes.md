@@ -2,7 +2,8 @@ https://stackoverflow.com/questions/78004799/package-electron-application-in-nix
 
 # Proof of Concept for using this as new Quiqr Base
 
-- [ ] class based react component
+- [x] class based react component
+- [ ] replacement for switch in layouts
 - [ ] receive sent data over api
 
 
