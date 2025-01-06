@@ -108,6 +108,7 @@ class SiteLibraryRouted extends React.Component{
     let localsites = [];
     service.getConfigurations(true).then((c)=>{
 
+    console.log("sites")
     console.log(c)
 
       c.sites.forEach((site) =>{
@@ -569,16 +570,17 @@ class SiteLibraryRouted extends React.Component{
           }}
           />
 
-          <Route path='/' element={ 
+          <Route path='/' element={
               this.renderSelectSites("last",null)
           }
           />
-          <Route path='/sites' render={ ({match, history})=> {
-            this.history = history;
-            return (
+          <Route path='/sites' element={
               this.renderSelectSites("last",null)
-            );
-          }}
+          }
+          />
+          <Route path='/sites/' element={
+              this.renderSelectSites("last",null)
+          }
           />
 
       </Routes>

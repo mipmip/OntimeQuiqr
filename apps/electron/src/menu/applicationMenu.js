@@ -82,6 +82,10 @@ function makeFileMenu(serverUrl, redirectWindow, showDialog, download) {
     label: 'File',
     submenu: [
       {
+        label: 'Project Library',
+        click: () => redirectWindow('/'),
+      },
+      {
         label: 'New project...',
         click: () => redirectWindow('/editor?settings=project__manage&new=true'),
       },

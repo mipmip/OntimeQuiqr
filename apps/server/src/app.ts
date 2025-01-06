@@ -227,10 +227,10 @@ export const startServer = async (
 
   expressServer.listen(serverPort, '0.0.0.0', () => {
     const nif = getNetworkInterfaces();
-    consoleSuccess(`Local: http://localhost:${serverPort}${prefix}/editor`);
+    consoleSuccess(`Local: http://localhost:${serverPort}${prefix}/`);
     for (const key in nif) {
       const address = nif[key].address;
-      consoleSuccess(`Network: http://${address}:${serverPort}${prefix}/editor`);
+      consoleSuccess(`Network: http://${address}:${serverPort}${prefix}/`);
     }
   });
 

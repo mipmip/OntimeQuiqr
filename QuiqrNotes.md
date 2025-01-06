@@ -5,14 +5,12 @@ https://stackoverflow.com/questions/78004799/package-electron-application-in-nix
 - [x] class based react component
 - [ ] replacement for switch in layouts
 - [ ] receive sent data over api
-
-
-
-
+    - [ ] get existing data
 
 # Understand
 
 - socket what does it do?
+- als electron niet bijwerkt, alle electron processen killen
 
 
 

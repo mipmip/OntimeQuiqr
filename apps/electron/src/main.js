@@ -204,7 +204,7 @@ app.whenReady().then(() => {
       Menu.setApplicationMenu(menu);
 
       win
-        .loadURL(`${clientUrl}/editor`)
+        .loadURL(`${clientUrl}/`)
         .then(() => {
           win.webContents.setBackgroundThrottling(false);
 
