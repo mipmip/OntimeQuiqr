@@ -1,6 +1,6 @@
 import * as React                                                 from 'react';
-import { Route }                                                  from 'react-router-dom';
-import service                                                    from './../../services/service';
+import { Routes, Route }                                                  from 'react-router-dom';
+//import service                                                    from './../../services/service';
 import {TopToolbarRight, ToolbarButton, ToolbarToggleButtonGroup} from '../TopToolbarRight'
 import AppsIcon                                                   from '@material-ui/icons/Apps';
 import SettingsApplicationsIcon                                   from '@material-ui/icons/SettingsApplications';
@@ -19,17 +19,17 @@ export class SiteLibraryToolbarRight extends React.Component {
     }
   }
 
-  render(){
-    return <Route render={({history})=>{ return this.renderWithRoute(history) }} />
+  renderx(){
+    return <Routes><Route path='/' render={({history})=>{ return this.renderWithRoute(history) }} /></Routes>
   }
 
-  renderWithRoute(history){
+  render(){
 
     const leftButtons = [
       <ToolbarButton
         key="buttonNewSite"
         action={()=>{
-          service.api.redirectTo(`/sites/new-site/x${Math.random()}`, true);
+          //service.api.redirectTo(`/sites/new-site/x${Math.random()}`, true);
         }}
         title="New"
         icon={AddIcon}
@@ -39,7 +39,7 @@ export class SiteLibraryToolbarRight extends React.Component {
       <ToolbarButton
         key="buttonImportSite"
         action={()=>{
-          service.api.redirectTo(`/sites/import-site/x${Math.random()}`, true);
+          //service.api.redirectTo(`/sites/import-site/x${Math.random()}`, true);
         }}
         title="Import"
         icon={InputIcon}
@@ -70,7 +70,7 @@ export class SiteLibraryToolbarRight extends React.Component {
         key={"toolbarbutton-library"}
         active={true}
         action={()=>{
-          service.api.redirectTo("/sites/last");
+          //service.api.redirectTo("/sites/last");
         }}
         title="Site Library"
         icon={AppsIcon}
@@ -78,20 +78,21 @@ export class SiteLibraryToolbarRight extends React.Component {
       <ToolbarButton
         key="buttonPrefs"
         action={()=>{
-          history.push('/prefs/')
+          //history.push('/prefs/')
         }}
         title="Preferences"
         icon={SettingsApplicationsIcon}
       />,
     ];
 
-    return <TopToolbarRight
-      key="toolbar-right-new-site"
-      itemsLeft={leftButtons}
-      itemsCenter={centerButtons}
-      itemsRight={rightButtons}
+    return <React.Fragment>
+      <TopToolbarRight
+        key="toolbar-right-new-site"
+        itemsLeft={leftButtons}
+        itemsCenter={centerButtons}
+        itemsRight={rightButtons}
     />
-
+    </React.Fragment>
 
   }
 }

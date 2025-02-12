@@ -1,7 +1,7 @@
 import * as React           from 'react';
-import { Route }            from 'react-router-dom';
+import { Routes, Route }            from 'react-router-dom';
 import Sidebar           from './../Sidebar';
-import service              from './../../services/service';
+//import service              from './../../services/service';
 
 
 export class SiteLibrarySidebar extends React.Component {
@@ -15,6 +15,7 @@ export class SiteLibrarySidebar extends React.Component {
   }
 
   componentDidMount(){
+    /*
     service.api.readConfPrefKey('sitesListingView').then((view)=>{
       this.setState({selectedMenuItem: view });
     });
@@ -43,10 +44,11 @@ export class SiteLibrarySidebar extends React.Component {
 
       this.setState({tags:tags});
     });
+    */
   }
 
   render(){
-    return <Route render={({history})=>{ return this.renderWithRoute(history) }} />
+    return <Routes><Route render={({history})=>{ return this.renderWithRoute(history) }} /></Routes>
   }
 
   saveSelectedMenuItem(item){
