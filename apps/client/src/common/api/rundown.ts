@@ -9,6 +9,8 @@ const rundownPath = `${apiEntryUrl}/rundown`;
  * HTTP request to fetch all events
  */
 export async function fetchNormalisedRundown(): Promise<RundownCached> {
+  console.log("fsfsd")
+  console.log(rundownPath)
   const res = await axios.get(`${rundownPath}/normalised`);
   return res.data;
 }

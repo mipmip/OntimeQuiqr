@@ -1,4 +1,6 @@
 import React from 'react';
+
+const Cuesheet = React.lazy(() => import('./features/cuesheet/ProtectedCuesheet'));
 import {
   createRoutesFromChildren,
   matchRoutes,
@@ -238,8 +240,9 @@ export default class QrAppRouter extends React.Component<MyProps, MyState>{
       <React.Suspense fallback={null}>
         <Routes>
 
+          <Route path='/cuesheet' element={<Cuesheet />} />
           <Route
-            path="*"
+            path="/"
             element={
               <ThemeProvider theme={this.state.theme}>
                 <CssBaseline />

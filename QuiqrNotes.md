@@ -12,5 +12,11 @@ https://stackoverflow.com/questions/78004799/package-electron-application-in-nix
 - socket what does it do?
 - als electron niet bijwerkt, alle electron processen killen
 
+# Dev Quick start
+
+nix develop
+pnpm install
+pnpm run dev
+
 
 
